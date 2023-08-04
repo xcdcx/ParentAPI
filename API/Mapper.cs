@@ -1,4 +1,5 @@
 ﻿using API.Dtos;
+using Engine.Entities;
 
 namespace API
 {
@@ -24,6 +25,16 @@ namespace API
                 Id = person.Id,
                 ParentId = person.Parent ?? 0
             };
+        }
+
+        internal static IEnumerable<PersonResponseDto> ToDto(this IEnumerable<PersonNode> nodes)
+        {
+            List<PersonResponseDto> result = new();
+            foreach (PersonNode node in nodes)
+            {
+                result.Add(new PersonResponseDto(node));
+            }
+            return result;
         }
     }
 }

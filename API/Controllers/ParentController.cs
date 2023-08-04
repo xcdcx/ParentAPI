@@ -17,13 +17,13 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<PersonNode>/*<IEnumerable<PersonResponseDto>>*/ BuildTree(IEnumerable<PersonDto> request)
+        public ActionResult<IEnumerable<PersonResponseDto>> BuildTree(IEnumerable<PersonDto> request)
         {
             try
             {
-                var response = _engine.CreateTree(request.ToEntity());
-                return Ok(response);
-                //return Ok(new List<PersonResponseDto>());
+                IEnumerable<PersonNode> response = _engine.CreateTree(request.ToEntity());
+                //return Ok(response);
+                return Ok(response.ToDto());
             }
             catch (Exception ex)
             {

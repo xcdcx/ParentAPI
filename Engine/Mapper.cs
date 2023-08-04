@@ -24,30 +24,21 @@ namespace Engine
             return arr;
         }
 
-        //internal static IEnumerable<PersonNode> ToEntity(this Node node)
-        //{
-        //    PersonNode result = new();
-        //    result.Name = node.value;
-        //    result.Id = node.key;
-        //    result.Childs = node.childs;
-
-        //}
-
-        internal static PersonNode ToEntity(this Node node)
+        internal static IEnumerable<PersonNode> ToEntity(this Node node)
         {
-            //PersonNode result = new();
-            //result.Name = node.value;
-            //result.Id = node.key;
-            //result.Childs = new List<PersonNode>();
-            //if (node.childs.Any())
-            //{
-            //    foreach(Node childNode in node.childs)
-            //    {
-            //        result.Childs.ToList().Add(childNode.ToEntity());
-            //    }
-            //}
-            //return result;
-            return new PersonNode(node);
+            List<PersonNode> result = new();
+            if (node.value == null) //tree root node
+            {
+                foreach (Node realNode in node.childs)
+                {
+                    result.Add(new PersonNode(realNode));
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Error in Parent tree algorithm");
+            }
+            return result;
         }
     }
 }
