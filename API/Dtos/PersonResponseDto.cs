@@ -1,15 +1,16 @@
 ﻿using Engine.Entities;
+using Shared.Entities;
 
 namespace API.Dtos
 {
     public class PersonResponseDto
     {
         public PersonResponseDto() { }
-        public PersonResponseDto(PersonNode node)
+        public PersonResponseDto(Node node)
         {
-            this.Id = node.Id;
-            this.Name = node.Name;
-            this.Childs = node.Childs.Select(n => new PersonResponseDto(n)).ToList();
+            this.Id = node.id;
+            this.Name = node.value;
+            this.Childs = node.childs.Select(n => new PersonResponseDto(n)).ToList();
         }
         public int Id { get; set; }
         public string Name { get; set; }

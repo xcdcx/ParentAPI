@@ -1,18 +1,17 @@
 ﻿using Engine.Algorithms;
-using Engine.Entities;
-using System.Reflection.Metadata.Ecma335;
+using Shared.Entities;
 
 namespace Engine
 {
     internal static class Mapper
     {
-        internal static Dictionary<int, DataMember> ToDataMembersDic(this IEnumerable<Person> personse)
+        internal static Dictionary<int, DataMember> ToDataMembersDic(this IEnumerable<Entities.Person> personse)
         {
             Dictionary<int, DataMember> result = new Dictionary<int, DataMember>
             {
                 { 0, new DataMember(-1, null) }
             };
-            foreach (Person person in personse)
+            foreach (Entities.Person person in personse)
             {
                 if (result.ContainsKey(person.Id))
                 {
@@ -25,11 +24,11 @@ namespace Engine
             }
             return result;
         }
-        internal static DataMember[] ToDataMembers(this IEnumerable<Person> persons)
+        internal static DataMember[] ToDataMembers(this IEnumerable<Entities.Person> persons)
         {
             DataMember[] arr = new DataMember[persons.Count() + 1];
             arr[0] = new DataMember(-1, null); //root init
-            foreach (Person person in persons)
+            foreach (Entities.Person person in persons)
             {
                 if (arr[person.Id] != null)
                 {
@@ -43,19 +42,15 @@ namespace Engine
             return arr;
         }
 
-        internal static IEnumerable<PersonNode> ToEntity(this Node node)
+        internal static IEnumerable<Services.Models.Person> ToModel(this Node node)
         {
-            List<PersonNode> result = new();
+            List<Services.Models.Person> result = new();
             if (node.value == null) //tree root node
             {
-                foreach (Node realNode in node.childs)
+                foreach (Node person in node.childs)
                 {
-                    result.Add(new PersonNode(realNode));
+                    result.Add(new Services.Models.Person(person));
                 }
-            }
-            else
-            {
-                throw new ArgumentException("Error in Parent tree algorithm");
             }
             return result;
         }

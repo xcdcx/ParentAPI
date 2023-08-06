@@ -1,9 +1,12 @@
 using API.Repo;
 using Engine;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 using Services;
+using Services.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,8 +61,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 builder.Services.AddAuthorization();
+
+builder.Services.Configure<PersonStoreDatabaseSettings>(builder.Configuration.GetSection(nameof(PersonStoreDatabaseSettings)));
+builder.Services.AddSingleton<IPersonStoreDatabaseSettings>(sp => sp.GetRequiredService<IOptions<PersonStoreDatabaseSettings>>().Value);
+builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configuration.GetValue<string>("PersonStoreDatabaseSettings:ConnectionString")));
+
 builder.Services.AddScoped<IParentEngine, ParentEngine>();
-builder.Services.AddScoped<IService, Service>();
+builder.Services.AddScoped<IPeopleService, PeopleService>();
 builder.Services.AddSingleton<IUserService, UserService>();
 
 var app = builder.Build();

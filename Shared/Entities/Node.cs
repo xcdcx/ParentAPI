@@ -1,4 +1,4 @@
-﻿namespace Engine.Algorithms
+﻿namespace Shared.Entities
 {
     // A parent tree node
     public class Node

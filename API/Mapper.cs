@@ -1,4 +1,5 @@
 ﻿using API.Dtos;
+using Shared.Entities;
 
 namespace API
 {
@@ -12,10 +13,26 @@ namespace API
         internal static IEnumerable<Engine.Entities.Person> ToEntity(this IEnumerable<PersonDto> persons)
         {
             List<Engine.Entities.Person> result = new();
+            HashSet<int> ids = new HashSet<int>();
+            foreach (PersonDto person in persons)
+            {
+                if(ids.Contains(person.Id))
+                {
+                    throw new ArgumentException("Duplicate id");
+                }
+                else
+                {
+                    ids.Add(person.Id);
+                }
+            }
             foreach (PersonDto person in persons)
             {
                 if (person != null)
                 {
+                    if(person.Parent.HasValue && !ids.Contains(person.Parent.Value))
+                    {
+                        person.Parent = null;
+                    }
                     result.Add(person.ToEntity());
                 }
             }
@@ -42,12 +59,15 @@ namespace API
         /// </summary>
         /// <param name="nodes"></param>
         /// <returns>api object</returns>
-        internal static IEnumerable<PersonResponseDto> ToDto(this IEnumerable<Engine.Entities.PersonNode> nodes)
+        internal static IEnumerable<PersonResponseDto> ToDto(this Node node)
         {
             List<PersonResponseDto> result = new();
-            foreach (Engine.Entities.PersonNode node in nodes)
+            if (node.value == null) //tree root node
             {
-                result.Add(new PersonResponseDto(node));
+                foreach (Node child in node.childs)
+                {
+                    result.Add(new PersonResponseDto(child));
+                }
             }
             return result;
         }

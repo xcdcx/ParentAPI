@@ -1,4 +1,6 @@
-﻿namespace Engine.Algorithms
+﻿using Shared.Entities;
+
+namespace Engine.Algorithms
 {
     internal class ParentTree
     {

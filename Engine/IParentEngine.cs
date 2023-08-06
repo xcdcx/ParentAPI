@@ -1,4 +1,5 @@
 ﻿using Engine.Entities;
+using Shared.Entities;
 
 namespace Engine
 {
@@ -9,6 +10,6 @@ namespace Engine
         /// </summary>
         /// <param name="person"></param>
         /// <returns>parent tree</returns>
-        public IEnumerable<PersonNode> CreateTree(IEnumerable<Person> person);
+        public Node CreateTree(IEnumerable<Person> person);
     }
 }

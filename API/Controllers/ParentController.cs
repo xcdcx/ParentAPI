@@ -4,6 +4,7 @@ using Engine.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Entities;
 
 namespace API.Controllers
 {
@@ -30,8 +31,7 @@ namespace API.Controllers
         {
             try
             {
-                IEnumerable<PersonNode> response = _engine.CreateTree(request.ToEntity());
-                //return Ok(response);
+                Node response = _engine.CreateTree(request.ToEntity());
                 return Ok(response.ToDto());
             }
             catch (Exception ex)

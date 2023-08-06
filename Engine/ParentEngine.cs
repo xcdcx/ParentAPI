@@ -1,13 +1,14 @@
 ﻿using Engine.Algorithms;
 using Engine.Entities;
 using Services;
+using Shared.Entities;
 
 namespace Engine
 {
     public class ParentEngine : IParentEngine
     {
-        private readonly IService _service;
-        public ParentEngine(IService service)
+        private readonly IPeopleService _service;
+        public ParentEngine(IPeopleService service)
         {
                 _service = service;
         }
@@ -17,15 +18,16 @@ namespace Engine
         /// </summary>
         /// <param name="person"></param>
         /// <returns>parent tree</returns>
-        public IEnumerable<PersonNode> CreateTree(IEnumerable<Person> person)
+        public Node CreateTree(IEnumerable<Person> person)
         {
             var dataDic = person.ToDataMembersDic();
             ParentTree tree = new ParentTree();
             Node node = tree.CreateTree(dataDic);
+            //var result = node.ToEntity();
 
-            //_service.DoSomething();
+            _service.Create(node.ToModel());
 
-            return node.ToEntity();
+            return node;
         }
     }
 }
