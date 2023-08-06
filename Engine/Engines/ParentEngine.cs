@@ -1,11 +1,10 @@
 ﻿using Engine.Algorithms;
-using Engine.Engines;
 using Engine.Entities;
 using Microsoft.Extensions.Logging;
 using Service.Services;
 using Shared.Entities;
 
-namespace Engine
+namespace Engine.Engines
 {
     public class ParentEngine : IParentEngine
     {
@@ -36,7 +35,7 @@ namespace Engine
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex , "Error in CreateTree");
+                _logger.LogError(ex, "Error in CreateTree");
                 throw;
             }
         }

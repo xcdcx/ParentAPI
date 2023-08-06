@@ -1,6 +1,6 @@
-﻿using API.Dtos;
+﻿using Service.Models;
 
-namespace API.Repo
+namespace Service.Services
 {
     public class UserService : IUserService
     {

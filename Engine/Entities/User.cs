@@ -1,4 +1,4 @@
-﻿namespace API.Repo
+﻿namespace Engine.Entities
 {
     public class User
     {

@@ -71,5 +71,27 @@ namespace API
             }
             return result;
         }
+
+        internal static Engine.Entities.UserLogin ToEntity(this UserLogin user)
+        {
+            return new Engine.Entities.UserLogin
+            {
+                Username = user.Username,
+                Password = user.Password,
+            };
+        }
+
+        internal static User ToDto(this Engine.Entities.User user)
+        {
+            return new User
+            {
+                UserName = user.UserName,
+                Password = user.Password,
+                EmailAddress = user.EmailAddress,
+                GivenName = user.GivenName,
+                Surname = user.Surname,
+                Role = user.Role
+            };
+        }
     }
 }

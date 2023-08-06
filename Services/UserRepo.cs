@@ -1,4 +1,6 @@
-﻿namespace API.Repo
+﻿using Service.Models;
+
+namespace Service
 {
     public class UserRepo
     {

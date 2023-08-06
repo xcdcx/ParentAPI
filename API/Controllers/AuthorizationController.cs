@@ -1,6 +1,5 @@
 ﻿using API.Dtos;
-using API.Repo;
-using Engine;
+using Engine.Engines;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,12 +13,12 @@ namespace API.Controllers
     public class AuthorizationController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly IUserService _userService;
+        private readonly IUserEngine _userEngine;
         private readonly IConfiguration _configuration;
-        public AuthorizationController(ILogger<AuthorizationController> logger, IUserService userService, IConfiguration configuration)
+        public AuthorizationController(ILogger<AuthorizationController> logger, IUserEngine userEngine, IConfiguration configuration)
         {
             _logger = logger;
-            _userService = userService;
+            _userEngine = userEngine;
             _configuration = configuration;
         }
 
@@ -36,7 +35,7 @@ namespace API.Controllers
             {
                 if (!string.IsNullOrEmpty(user.Username) && !string.IsNullOrEmpty(user.Password))
                 {
-                    var loggedInUser = _userService.Get(user);
+                    var loggedInUser = _userEngine.Get(user.ToEntity()).ToDto();
                     if (loggedInUser is null)
                     {
                         return NotFound("User not found");
@@ -68,6 +67,11 @@ namespace API.Controllers
                     return Ok(tokenString);
                 }
                 return BadRequest("Invalid user credentials");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogError(ex, "User not found");
+                throw;
             }
             catch (Exception ex)
             {

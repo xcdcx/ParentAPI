@@ -1,4 +1,5 @@
 ﻿using Engine.Algorithms;
+using Engine.Entities;
 using Shared.Entities;
 
 namespace Engine
@@ -53,6 +54,28 @@ namespace Engine
                 }
             }
             return result;
+        }
+
+        internal static Service.Models.UserLogin ToModel(this UserLogin login)
+        {
+            return new Service.Models.UserLogin
+            {
+                Username = login.Username,
+                Password = login.Password
+            };
+        }
+
+        internal static User ToEntity(this Service.Models.User user)
+        {
+            return new User
+            {
+                UserName = user.UserName,
+                Password = user.Password,
+                EmailAddress = user.EmailAddress,
+                GivenName = user.GivenName,
+                Surname = user.Surname,
+                Role = user.Role
+            };
         }
     }
 }

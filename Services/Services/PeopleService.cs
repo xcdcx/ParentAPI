@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 using Microsoft.Extensions.Logging;
 
-namespace Services
+namespace Service.Services
 {
     public class PeopleService : IPeopleService
     {

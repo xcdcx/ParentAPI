@@ -1,6 +1,6 @@
 ﻿using Services.Models;
 
-namespace Services
+namespace Service.Services
 {
     public interface IPeopleService
     {

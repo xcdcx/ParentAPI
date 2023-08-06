@@ -1,11 +1,10 @@
-using API.Repo;
-using Engine;
+using Engine.Engines;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
-using Services;
+using Service.Services;
 using Services.Models;
 using System.Text;
 
@@ -69,6 +68,7 @@ builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configu
 builder.Services.AddScoped<IParentEngine, ParentEngine>();
 builder.Services.AddScoped<IPeopleService, PeopleService>();
 builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddScoped<IUserEngine, UserEngine>();
 
 var app = builder.Build();
 

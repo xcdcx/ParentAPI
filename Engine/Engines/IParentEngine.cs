@@ -1,7 +1,7 @@
 ﻿using Engine.Entities;
 using Shared.Entities;
 
-namespace Engine
+namespace Engine.Engines
 {
     public interface IParentEngine
     {
