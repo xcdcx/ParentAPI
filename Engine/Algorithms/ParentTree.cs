@@ -1,55 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace Engine.Algorithms
+﻿namespace Engine.Algorithms
 {
     internal class ParentTree
     {
         public Node root;
+
         /// <summary>
-        /// Creates a node with key as 'i',
-        /// if i is root, then it changes root,
-        /// if parent of i is not created,
+        /// Creates a node with key as current,
+        /// if current is root, then it changes root,
+        /// if parent of current is not created,
         /// then it creates parent first
         /// </summary>
         /// <param name="parent"></param>
-        /// <param name="i"></param>
+        /// <param name="current"></param>
         /// <param name="created"></param>
-        public void CreateNode(DataMember[] parent, int i, Node[] created)
+        public void CreateNode(Dictionary<int, DataMember> parent, KeyValuePair<int, DataMember> current, Dictionary<int, Node> created)
         {
             // If this node is already created
-            if (created[i] != null)
+            if(created.ContainsKey(current.Key))
             {
                 return;
             }
 
-            // Create a new node and set created[i]
-            created[i] = new Node(i, parent[i]._value);
+            // Create a new node
+            created.Add(current.Key, new Node(current.Key, current.Value.key, current.Value.value));
 
-            // If 'i' is root, change root
+            // If current is root, change root
             // and return
-            if (parent[i]._key == -1)
+            if (current.Value.key == -1)
             {
-                root = created[i];
+                root = created[current.Key];
                 return;
             }
 
             // If parent is not created, then
             // create parent first
-            if (created[parent[i]._key] == null)
+            if(!created.ContainsKey(current.Value.key))
             {
-                CreateNode(parent, parent[i]._key, created);
+                CreateNode(parent, parent.SingleOrDefault(p => p.Key == current.Value.key), created);
             }
 
             // Find parent
-            Node p = created[parent[i]._key];
+            Node p = created[current.Value.key];
 
             // Add child
-            p.childs.Add(created[i]);
+            p.childs.Add(created[current.Key]);
         }
 
         /// <summary>
@@ -57,45 +51,19 @@ namespace Engine.Algorithms
         /// </summary>
         /// <param name="parent"></param>
         /// <returns>Root of the created tree</returns>
-        public Node CreateTree(DataMember[] parent)
+        public Node CreateTree(Dictionary<int, DataMember> parents)
         {
-            // Create an array created[] to
+            // Create an dictionary created<int, Node> to
             // keep track of created nodes,
-            int n = parent.Length;
-            Node[] created = new Node[n];
+            Dictionary<int, Node> created = new Dictionary<int, Node>();
+            //Node[] created = new Node[n];
 
-            for (int i = 0; i < n; i++)
+            foreach(KeyValuePair<int, DataMember> parent in parents)
             {
-                CreateNode(parent, i, created);
+                CreateNode(parents, parent, created);
             }
 
             return root;
-        }
-    }
-
-    // A parent tree node
-    public class Node
-    {
-        public int key;
-        public string value;
-        public List<Node> childs;
-
-        public Node(int key, string value)
-        {
-            this.key = key;
-            this.value = value;
-            childs = new List<Node>();
-        }
-    }
-
-    public class DataMember
-    {
-        public readonly int _key;
-        public readonly string _value;
-        public DataMember(int key, string value)
-        {
-            this._key = key;
-            this._value = value;
         }
     }
 }

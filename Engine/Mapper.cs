@@ -6,6 +6,25 @@ namespace Engine
 {
     internal static class Mapper
     {
+        internal static Dictionary<int, DataMember> ToDataMembersDic(this IEnumerable<Person> personse)
+        {
+            Dictionary<int, DataMember> result = new Dictionary<int, DataMember>
+            {
+                { 0, new DataMember(-1, null) }
+            };
+            foreach (Person person in personse)
+            {
+                if (result.ContainsKey(person.Id))
+                {
+                    throw new ArgumentException("Duplicated Id");
+                }
+                else
+                {
+                    result.Add(person.Id, new DataMember(person.ParentId, person.Name));
+                }
+            }
+            return result;
+        }
         internal static DataMember[] ToDataMembers(this IEnumerable<Person> persons)
         {
             DataMember[] arr = new DataMember[persons.Count() + 1];

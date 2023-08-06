@@ -8,7 +8,7 @@ namespace Engine.Entities
         public PersonNode() { }
         public PersonNode(Node node)
         {
-            this.Id = node.key;
+            this.Id = node.id;
             this.Name = node.value;
             this.Childs = node.childs.Select(n => new PersonNode(n)).ToList();
         }

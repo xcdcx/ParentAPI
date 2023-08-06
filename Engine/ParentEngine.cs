@@ -19,9 +19,9 @@ namespace Engine
         /// <returns>parent tree</returns>
         public IEnumerable<PersonNode> CreateTree(IEnumerable<Person> person)
         {
-            var dataArray = person.ToDataMembers();
+            var dataDic = person.ToDataMembersDic();
             ParentTree tree = new ParentTree();
-            Node node = tree.CreateTree(dataArray);
+            Node node = tree.CreateTree(dataDic);
 
             //_service.DoSomething();
 
