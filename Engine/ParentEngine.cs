@@ -4,13 +4,19 @@ using Services;
 
 namespace Engine
 {
-    public class EngineFacade : IEngine
+    public class ParentEngine : IParentEngine
     {
         private readonly IService _service;
-        public EngineFacade(IService service)
+        public ParentEngine(IService service)
         {
                 _service = service;
         }
+
+        /// <summary>
+        /// Order person array into parrent tree
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns>parent tree</returns>
         public IEnumerable<PersonNode> CreateTree(IEnumerable<Person> person)
         {
             var dataArray = person.ToDataMembers();

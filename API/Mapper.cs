@@ -1,10 +1,14 @@
 ﻿using API.Dtos;
-using Engine.Entities;
 
 namespace API
 {
     internal static class Mapper
     {
+        /// <summary>
+        /// Map api object to engine object
+        /// </summary>
+        /// <param name="persons"></param>
+        /// <returns>engine object</returns>
         internal static IEnumerable<Engine.Entities.Person> ToEntity(this IEnumerable<PersonDto> persons)
         {
             List<Engine.Entities.Person> result = new();
@@ -17,6 +21,12 @@ namespace API
             }
             return result;
         }
+
+        /// <summary>
+        /// Map api object to engine object
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns>engine object</returns>
         internal static Engine.Entities.Person? ToEntity(this PersonDto person)
         {
             return new Engine.Entities.Person
@@ -27,10 +37,15 @@ namespace API
             };
         }
 
-        internal static IEnumerable<PersonResponseDto> ToDto(this IEnumerable<PersonNode> nodes)
+        /// <summary>
+        /// Map engine object to api object
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <returns>api object</returns>
+        internal static IEnumerable<PersonResponseDto> ToDto(this IEnumerable<Engine.Entities.PersonNode> nodes)
         {
             List<PersonResponseDto> result = new();
-            foreach (PersonNode node in nodes)
+            foreach (Engine.Entities.PersonNode node in nodes)
             {
                 result.Add(new PersonResponseDto(node));
             }

@@ -10,11 +10,15 @@ namespace Engine.Algorithms
     internal class ParentTree
     {
         public Node root;
-
-        // Creates a node with key as 'i'.
-        // If i is root, then it changes
-        // root. If parent of i is not created,
-        // then it creates parent first
+        /// <summary>
+        /// Creates a node with key as 'i',
+        /// if i is root, then it changes root,
+        /// if parent of i is not created,
+        /// then it creates parent first
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="i"></param>
+        /// <param name="created"></param>
         public void CreateNode(DataMember[] parent, int i, Node[] created)
         {
             // If this node is already created
@@ -48,8 +52,11 @@ namespace Engine.Algorithms
             p.childs.Add(created[i]);
         }
 
-        /* Creates tree from parent[0..n-1]
-        and returns root of the created tree */
+        /// <summary>
+        /// Creates tree from parent
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <returns>Root of the created tree</returns>
         public Node CreateTree(DataMember[] parent)
         {
             // Create an array created[] to

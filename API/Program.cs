@@ -58,7 +58,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 builder.Services.AddAuthorization();
-builder.Services.AddScoped<IEngine, EngineFacade>();
+builder.Services.AddScoped<IParentEngine, ParentEngine>();
 builder.Services.AddScoped<IService, Service>();
 builder.Services.AddSingleton<IUserService, UserService>();
 

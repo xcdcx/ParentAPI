@@ -23,6 +23,11 @@ namespace API.Controllers
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Authorize client
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>authorization token</returns>
         [Route("/authorize")]
         [HttpPost]
         public ActionResult<string> GetTokenController(UserLogin user)
