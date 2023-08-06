@@ -4,6 +4,6 @@ namespace Services
 {
     public interface IPeopleService
     {
-        int Create(IEnumerable<Person> persons);
+        void Create(IEnumerable<Person> persons);
     }
 }

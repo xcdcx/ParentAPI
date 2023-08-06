@@ -32,38 +32,48 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult<string> GetTokenController(UserLogin user)
         {
-            if (!string.IsNullOrEmpty(user.Username) &&
-                !string.IsNullOrEmpty(user.Password))
+            try
             {
-                var loggedInUser = _userService.Get(user);
-                if (loggedInUser is null) return NotFound("User not found");
-
-                var claims = new[]
+                if (!string.IsNullOrEmpty(user.Username) && !string.IsNullOrEmpty(user.Password))
                 {
-                    new Claim(ClaimTypes.NameIdentifier, loggedInUser.UserName),
-                    new Claim(ClaimTypes.Email, loggedInUser.EmailAddress),
-                    new Claim(ClaimTypes.GivenName, loggedInUser.GivenName),
-                    new Claim(ClaimTypes.Surname, loggedInUser.Surname),
-                    new Claim(ClaimTypes.Role, loggedInUser.Role)
-                };
+                    var loggedInUser = _userService.Get(user);
+                    if (loggedInUser is null)
+                    {
+                        return NotFound("User not found");
+                    }
 
-                var token = new JwtSecurityToken
-                (
-                    issuer: _configuration["Jwt:Issuer"],
-                    audience: _configuration["Jwt:Audience"],
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddDays(60),
-                    notBefore: DateTime.UtcNow,
-                    signingCredentials: new SigningCredentials(
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])),
-                        SecurityAlgorithms.HmacSha256)
-                );
+                    var claims = new[]
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, loggedInUser.UserName),
+                        new Claim(ClaimTypes.Email, loggedInUser.EmailAddress),
+                        new Claim(ClaimTypes.GivenName, loggedInUser.GivenName),
+                        new Claim(ClaimTypes.Surname, loggedInUser.Surname),
+                        new Claim(ClaimTypes.Role, loggedInUser.Role)
+                    };
 
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+                    var token = new JwtSecurityToken
+                    (
+                        issuer: _configuration["Jwt:Issuer"],
+                        audience: _configuration["Jwt:Audience"],
+                        claims: claims,
+                        expires: DateTime.UtcNow.AddMinutes(15),
+                        notBefore: DateTime.UtcNow,
+                        signingCredentials: new SigningCredentials(
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])),
+                            SecurityAlgorithms.HmacSha256)
+                    );
 
-                return Ok(tokenString);
+                    var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+                    return Ok(tokenString);
+                }
+                return BadRequest("Invalid user credentials");
             }
-            return BadRequest("Invalid user credentials");
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in Authorization");
+                throw;
+            }
         }
     }
 }

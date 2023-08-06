@@ -29,16 +29,23 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult<IEnumerable<PersonResponseDto>> BuildTree(IEnumerable<PersonDto> request)
         {
+            IEnumerable<PersonResponseDto> result = new List<PersonResponseDto>();
             try
             {
                 Node response = _engine.CreateTree(request.ToEntity());
-                return Ok(response.ToDto());
+                result = response.ToDto();
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex.Message, "Duplicate id in input");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 throw;
             }
+            return Ok(result);
         }
     }
 }
